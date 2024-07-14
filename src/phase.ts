@@ -15,6 +15,8 @@ export class Phase {
   }
 
   end() {
+    const phase = this.scene.getCurrentPhase();
+    console.log("this is the phase", phase);
     this.scene.shiftPhase();
   }
 }

@@ -54,7 +54,7 @@ describe("Abilities - COSTAR", () => {
       game.doAttack(getMovePosition(game.scene, 0, Moves.SPLASH));
       await game.phaseInterceptor.to(CommandPhase);
       game.doSwitchPokemon(2);
-      await game.phaseInterceptor.to(MessagePhase);
+      // await game.phaseInterceptor.to(MessagePhase);
 
       [leftPokemon, rightPokemon] = game.scene.getPlayerField();
       expect(leftPokemon.summonData.battleStats[BattleStat.SPATK]).toBe(+2);
@@ -80,7 +80,7 @@ describe("Abilities - COSTAR", () => {
       game.doAttack(getMovePosition(game.scene, 0, Moves.SPLASH));
       await game.phaseInterceptor.to(CommandPhase);
       game.doSwitchPokemon(2);
-      await game.phaseInterceptor.to(MessagePhase);
+      //   await game.phaseInterceptor.to(MessagePhase);
 
       [leftPokemon, rightPokemon] = game.scene.getPlayerField();
       expect(leftPokemon.summonData.battleStats[BattleStat.ATK]).toBe(-2);

@@ -34,10 +34,10 @@ import {
   UnavailablePhase,
   VictoryPhase
 } from "#app/phases";
-import UI, {Mode} from "#app/ui/ui";
-import {Phase} from "#app/phase";
+import UI, { Mode } from "#app/ui/ui";
+import { Phase } from "#app/phase";
 import ErrorInterceptor from "#app/test/utils/errorInterceptor";
-import {QuietFormChangePhase} from "#app/form-change-phase";
+import { QuietFormChangePhase } from "#app/form-change-phase";
 
 export default class PhaseInterceptor {
   public scene;
@@ -54,8 +54,8 @@ export default class PhaseInterceptor {
   private originalSuperEnd;
 
   /**
-   * List of phases with their corresponding start methods.
-   */
+     * List of phases with their corresponding start methods.
+     */
   private PHASES = [
     [LoginPhase, this.startPhase],
     [TitlePhase, this.startPhase],
@@ -67,7 +67,6 @@ export default class PhaseInterceptor {
     [ToggleDoublePositionPhase, this.startPhase],
     [CheckSwitchPhase, this.startPhase],
     [ShowAbilityPhase, this.startPhase],
-    [MessagePhase, this.startPhase],
     [TurnInitPhase, this.startPhase],
     [CommandPhase, this.startPhase],
     [EnemyCommandPhase, this.startPhase],
@@ -99,9 +98,9 @@ export default class PhaseInterceptor {
   ];
 
   /**
-   * Constructor to initialize the scene and properties, and to start the phase handling.
-   * @param scene - The scene to be managed.
-   */
+     * Constructor to initialize the scene and properties, and to start the phase handling.
+     * @param scene - The scene to be managed.
+     */
   constructor(scene) {
     this.scene = scene;
     this.log = [];
@@ -121,20 +120,20 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to set the starting phase.
-   * @param phaseFrom - The phase to start from.
-   * @returns The instance of the PhaseInterceptor.
-   */
+     * Method to set the starting phase.
+     * @param phaseFrom - The phase to start from.
+     * @returns The instance of the PhaseInterceptor.
+     */
   runFrom(phaseFrom) {
     this.phaseFrom = phaseFrom;
     return this;
   }
 
   /**
-   * Method to transition to a target phase.
-   * @param phaseTo - The phase to transition to.
-   * @returns A promise that resolves when the transition is complete.
-   */
+     * Method to transition to a target phase.
+     * @param phaseTo - The phase to transition to.
+     * @returns A promise that resolves when the transition is complete.
+     */
   async to(phaseTo, runTarget: boolean = true): Promise<void> {
     return new Promise(async (resolve, reject) => {
       ErrorInterceptor.getInstance().add(this);
@@ -143,7 +142,7 @@ export default class PhaseInterceptor {
         this.phaseFrom = null;
       }
       const targetName = typeof phaseTo === "string" ? phaseTo : phaseTo.name;
-      this.intervalRun = setInterval(async() => {
+      this.intervalRun = setInterval(async () => {
         const currentPhase = this.onHold?.length && this.onHold[0];
         if (currentPhase && currentPhase.name === targetName) {
           clearInterval(this.intervalRun);
@@ -167,11 +166,11 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to run a phase with an optional skip function.
-   * @param phaseTarget - The phase to run.
-   * @param skipFn - Optional skip function.
-   * @returns A promise that resolves when the phase is run.
-   */
+     * Method to run a phase with an optional skip function.
+     * @param phaseTarget - The phase to run.
+     * @param skipFn - Optional skip function.
+     * @returns A promise that resolves when the phase is run.
+     */
   run(phaseTarget, skipFn?): Promise<void> {
     const targetName = typeof phaseTarget === "string" ? phaseTarget : phaseTarget.name;
     this.scene.moveAnimations = null; // Mandatory to avoid crash
@@ -227,8 +226,8 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to initialize phases and their corresponding methods.
-   */
+     * Method to initialize phases and their corresponding methods.
+     */
   initPhases() {
     this.originalSetMode = UI.prototype.setMode;
     this.originalSuperEnd = Phase.prototype.end;
@@ -245,9 +244,9 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to start a phase and log it.
-   * @param phase - The phase to start.
-   */
+     * Method to start a phase and log it.
+     * @param phase - The phase to start.
+     */
   startPhase(phase) {
     this.log.push(phase.name);
     const instance = this.scene.getCurrentPhase();
@@ -265,9 +264,9 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to end a phase and log it.
-   * @param phase - The phase to start.
-   */
+     * Method to end a phase and log it.
+     * @param phase - The phase to start.
+     */
   superEndPhase() {
     const instance = this.scene.getCurrentPhase();
     this.originalSuperEnd.apply(instance);
@@ -276,9 +275,9 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * m2m to set mode.
-   * @param phase - The phase to start.
-   */
+     * m2m to set mode.
+     * @param phase - The phase to start.
+     */
   setMode(mode: Mode, ...args: any[]): Promise<void> {
     const currentPhase = this.scene.getCurrentPhase();
     const instance = this.scene.ui;
@@ -295,8 +294,8 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to start the prompt handler.
-   */
+     * Method to start the prompt handler.
+     */
   startPromptHandler() {
     this.promptInterval = setInterval(() => {
       if (this.prompts.length) {
@@ -315,12 +314,12 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Method to add an action to the next prompt.
-   * @param phaseTarget - The target phase for the prompt.
-   * @param mode - The mode of the UI.
-   * @param callback - The callback function to execute.
-   * @param expireFn - The function to determine if the prompt has expired.
-   */
+     * Method to add an action to the next prompt.
+     * @param phaseTarget - The target phase for the prompt.
+     * @param mode - The mode of the UI.
+     * @param callback - The callback function to execute.
+     * @param expireFn - The function to determine if the prompt has expired.
+     */
   addToNextPrompt(phaseTarget: string, mode: Mode, callback: () => void, expireFn: () => void, awaitingActionInput: boolean = false) {
     this.prompts.push({
       phaseTarget,
@@ -332,11 +331,11 @@ export default class PhaseInterceptor {
   }
 
   /**
-   * Restores the original state of phases and clears intervals.
-   *
-   * This function iterates through all phases and resets their `start` method to the original
-   * function stored in `this.phases`. Additionally, it clears the `promptInterval` and `interval`.
-   */
+     * Restores the original state of phases and clears intervals.
+     *
+     * This function iterates through all phases and resets their `start` method to the original
+     * function stored in `this.phases`. Additionally, it clears the `promptInterval` and `interval`.
+     */
   restoreOg() {
     for (const [phase] of this.PHASES) {
       phase.prototype.start = this.phases[phase.name].start;

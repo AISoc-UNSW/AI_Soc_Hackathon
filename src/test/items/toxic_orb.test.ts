@@ -1,4 +1,4 @@
-import {afterEach, beforeAll, beforeEach, describe, expect, it, vi} from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import Phaser from "phaser";
 import GameManager from "#app/test/utils/gameManager";
 import * as overrides from "#app/overrides";
@@ -8,10 +8,10 @@ import {
   MessagePhase,
   TurnEndPhase,
 } from "#app/phases";
-import {Mode} from "#app/ui/ui";
-import {getMovePosition} from "#app/test/utils/gameManagerUtils";
-import {Command} from "#app/ui/command-ui-handler";
-import {StatusEffect} from "#app/data/status-effect";
+import { Mode } from "#app/ui/ui";
+import { getMovePosition } from "#app/test/utils/gameManagerUtils";
+import { Command } from "#app/ui/command-ui-handler";
+import { StatusEffect } from "#app/data/status-effect";
 import { Abilities } from "#enums/abilities";
 import { Moves } from "#enums/moves";
 import { Species } from "#enums/species";
@@ -47,7 +47,7 @@ describe("Items - Toxic orb", () => {
     }]);
   });
 
-  it("TOXIC ORB", async() => {
+  it("TOXIC ORB", async () => {
     const moveToUse = Moves.GROWTH;
     await game.startBattle([
       Species.MIGHTYENA,
@@ -68,10 +68,10 @@ describe("Items - Toxic orb", () => {
     // will run the 13 phase from enemyCommandPhase to TurnEndPhase
     await game.phaseInterceptor.runFrom(EnemyCommandPhase).to(TurnEndPhase);
     // Toxic orb should trigger here
-    await game.phaseInterceptor.run(MessagePhase);
+    // await game.phaseInterceptor.run(MessagePhase);
     const message = game.textInterceptor.getLatestMessage();
     expect(message).toContain("was badly poisoned by Toxic Orb");
-    await game.phaseInterceptor.run(MessagePhase);
+    // await game.phaseInterceptor.run(MessagePhase);
     const message2 = game.textInterceptor.getLatestMessage();
     expect(message2).toContain("is hurt");
     expect(message2).toContain("by poison");
