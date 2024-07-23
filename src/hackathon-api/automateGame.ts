@@ -24,7 +24,7 @@ export const automateGame = async (game: Phaser.Game) => {
 
     // Handles the check switch phase in a battle scene.
     // Function switches to SwitchPhase if true, and switches to CommandPhase if false.
-    // handleCheckSwitch(game, false);
+    handleCheckSwitch(game, false);
 
     phaseApi(battleScene);
 
@@ -38,17 +38,17 @@ export const automateGame = async (game: Phaser.Game) => {
 
 const phaseApi = (scene: BattleScene) => {
     const checkPhase = (currentPhase: Phase) => {
-        // if (currentPhase instanceof CommandPhase) {
-        //     // BallCommand(scene);
-        //     SwitchCommand(scene, 1); // Switch to next pokemon in team as an example
-        // } else {
-        //     console.log("Some other phase not yet implemented");
-        //     console.log(scene.ui.getHandler());
-        //     if (scene.ui.getHandler() instanceof CommandUiHandler) {
-        //         scene.ui.getHandler().clear();
-        //         scene.ui.setMode(Mode.MESSAGE);
-        //     }
-        // }
+        if (currentPhase instanceof CommandPhase) {
+            BallCommand(scene);
+            // SwitchCommand(scene, 1); // Switch to next pokemon in team as an example
+        } else {
+            console.log("Some other phase not yet implemented");
+            console.log(scene.ui.getHandler());
+            if (scene.ui.getHandler() instanceof CommandUiHandler) {
+                scene.ui.getHandler().clear();
+                scene.ui.setMode(Mode.MESSAGE);
+            }
+        }
     };
 
     // Add the checkPhase function as a listener for phase changes
