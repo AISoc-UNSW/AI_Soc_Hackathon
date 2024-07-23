@@ -40,8 +40,8 @@ export const automateGame = async (game: Phaser.Game) => {
 const phaseApi = (scene: BattleScene) => {
   const checkPhase = (currentPhase: Phase) => {
     if (currentPhase instanceof CommandPhase) {
-      // BallCommand(scene);
-      SwitchCommand(scene, 1); // Switch to next pokemon in team as an example
+      BallCommand(scene);
+      // SwitchCommand(scene, 1); // Switch to next pokemon in team as an example
     } else {
       console.log("Some other phase not yet implemented");
       console.log(scene.ui.getHandler());
