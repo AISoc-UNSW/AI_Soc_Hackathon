@@ -1,11 +1,16 @@
 import BattleScene from "#app/battle-scene.js";
 import { initWithStarters } from "./initWithStarters";
 import { BallCommand, getBattleState, SwitchCommand } from "./battlePhaseAPI";
-import { AttemptCapturePhase, CommandPhase } from "#app/phases.js";
+import {
+    AttemptCapturePhase,
+    CheckSwitchPhase,
+    CommandPhase,
+} from "#app/phases.js";
 import { Phase } from "#app/phase.js";
 import CommandUiHandler from "#app/ui/command-ui-handler.js";
 import { Mode } from "#app/ui/ui.js";
 import { handleCheckSwitch } from "./handleCheckSwitch";
+import { AutomatedFunctions } from "./automatedFunctions";
 
 /**
  * Automates the game
@@ -22,10 +27,6 @@ export const automateGame = async (game: Phaser.Game) => {
     // Participants can change the species numbers to select different starters.
     const battleScene = await initWithStarters(game, [1, 155, 258]);
 
-    // Handles the check switch phase in a battle scene.
-    // Function switches to SwitchPhase if true, and switches to CommandPhase if false.
-    handleCheckSwitch(game, false);
-
     phaseApi(battleScene);
 
     // Additional logic to interact with the game via the Pokerogue hackathon API can be added here.
@@ -37,13 +38,18 @@ export const automateGame = async (game: Phaser.Game) => {
 };
 
 const phaseApi = (scene: BattleScene) => {
+    const automatedFunctions = new AutomatedFunctions(scene);
     const checkPhase = (currentPhase: Phase) => {
+        // Update the battle state after every phase change
+        automatedFunctions.updateBattleState();
+
         if (currentPhase instanceof CommandPhase) {
-            BallCommand(scene);
-            // SwitchCommand(scene, 1); // Switch to next pokemon in team as an example
+            // console.log(automatedFunctions.battleState.allyStats);
+            automatedFunctions.BallCommand(4);
         } else {
             console.log("Some other phase not yet implemented");
             console.log(scene.ui.getHandler());
+            // DO NOT GET RID OF THIS IF STATEMENT OR ELSE BREAKS UI WHEN CATCHING POKEMON
             if (scene.ui.getHandler() instanceof CommandUiHandler) {
                 scene.ui.getHandler().clear();
                 scene.ui.setMode(Mode.MESSAGE);
